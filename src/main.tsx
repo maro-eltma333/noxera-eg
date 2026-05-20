@@ -27,6 +27,7 @@ import { SiteSettingsProvider } from "./app/context/SiteSettingsContext.tsx";
 import { BranchProvider } from "./app/context/BranchContext";
 import { OfferProvider } from "./app/context/OfferContext";
 import { StrictMode } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 
 createRoot(document.getElementById("root")!).render(
@@ -38,6 +39,7 @@ createRoot(document.getElementById("root")!).render(
             <CartProvider>
               <OrderProvider>
                 <App />
+                <SpeedInsights />
               </OrderProvider>
             </CartProvider>
           </OfferProvider>
