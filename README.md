@@ -2,6 +2,8 @@
 
 A modern, premium e-commerce web application for Noxera, a high-end streetwear brand. Features a custom glassmorphism design system, smooth scroll animations, and cinematic UI interactions.
 
+**Live Demo:** [noxera-eg.vercel.app](https://noxera-eg.vercel.app/)
+
 ---
 
 ## 🚀 Features
