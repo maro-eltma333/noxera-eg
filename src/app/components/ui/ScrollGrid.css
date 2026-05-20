@@ -1,0 +1,204 @@
+.scroll-grid-wrap *,
+.scroll-grid-wrap *::before,
+.scroll-grid-wrap *::after {
+    box-sizing: border-box;
+}
+
+.scroll-grid-wrap {
+    --gutter: 2rem;
+    background: #1a1a1a;
+    /* Matching Noxera's dark bg */
+    color: #fff;
+    overflow: clip;
+    position: relative;
+}
+
+
+.scroll-grid-wrap header {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding-left: 48px;
+    text-align: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.scroll-grid-wrap h2 {
+    padding-top: 12px;
+}
+
+.scroll-grid-wrap a {
+    color: white;
+}
+
+.scroll-grid-wrap .fluid {
+    font-size: clamp(4rem, 12vw, 12rem);
+    line-height: 0.8;
+    margin: 0;
+}
+
+.scroll-grid-wrap h2.fluid {
+    font-size: clamp(0.5rem, 2vw, 1.5rem);
+    padding-top: 48px;
+}
+
+.scroll-grid-wrap main section:first-of-type {
+    min-height: 200vh;
+    /* Reduced height for more compact scroll */
+}
+
+.scroll-grid-wrap .content {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    place-items: center;
+    align-content: center;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+    perspective: 2000px;
+    transform-style: preserve-3d;
+}
+
+.scroll-grid-wrap main section:last-of-type {
+    min-height: 50vh;
+    display: grid;
+    place-items: center;
+}
+
+.scroll-grid-wrap .grid {
+    --offset: 0;
+    --container-width: 1800px;
+    --gap: clamp(10px, 4vw, 40px);
+
+    width: var(--container-width);
+    max-width: calc(100% - (2 * var(--gutter)));
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    gap: var(--gap);
+    margin: 0 auto;
+    align-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    transform-style: preserve-3d;
+}
+
+@media (max-width: 768px) {
+    .scroll-grid-wrap {
+        --gutter: 1rem;
+    }
+
+    .scroll-grid-wrap header {
+        padding-left: 24px;
+        padding-right: 24px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .scroll-grid-wrap h2.fluid {
+        font-size: clamp(0.8rem, 4vw, 1.2rem);
+        max-width: 100%;
+        margin-top: 1.5rem;
+    }
+
+    .scroll-grid-wrap .grid {
+        grid-template-columns: 0.8fr 2.5fr 0.8fr;
+        --offset: -1;
+        gap: 10px;
+    }
+
+    .scroll-grid-wrap .grid>.layer:nth-of-type(1) {
+        display: none;
+    }
+}
+
+.scroll-grid-wrap .grid>.layer {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+}
+
+.scroll-grid-wrap .grid>.layer>div {
+    width: 100%;
+    height: 100%;
+}
+
+.scroll-grid-wrap .grid>.layer:nth-of-type(1) div:nth-of-type(odd) {
+    grid-column: 1;
+}
+
+.scroll-grid-wrap .grid>.layer:nth-of-type(1) div:nth-of-type(even) {
+    grid-column: -2;
+}
+
+.scroll-grid-wrap .grid>.layer:nth-of-type(2) div:nth-of-type(odd) {
+    grid-column: calc(2 + var(--offset));
+}
+
+.scroll-grid-wrap .grid>.layer:nth-of-type(2) div:nth-of-type(even) {
+    grid-column: calc(-3 - var(--offset));
+}
+
+.scroll-grid-wrap .grid>.layer:nth-of-type(3) div:first-of-type {
+    grid-column: calc(3 + var(--offset));
+    grid-row: 1;
+}
+
+.scroll-grid-wrap .grid>.layer:nth-of-type(3) div:last-of-type {
+    grid-column: calc(3 + var(--offset));
+    grid-row: -1;
+}
+
+.scroll-grid-wrap .grid img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 1rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    /* Added shadow for premium look */
+    transition: transform 0.4s ease;
+}
+
+.scroll-grid-wrap .grid img:hover {
+    transform: scale(1.02);
+}
+
+.scroll-grid-wrap .grid .scaler {
+    position: relative;
+    grid-area: 2 / calc(3 + var(--offset));
+}
+
+.scroll-grid-wrap .scaler {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.scroll-grid-wrap .scaler img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    object-fit: cover;
+    border-radius: 0;
+    /* starts full screen, rounded in JS */
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    max-width: none;
+    max-height: none;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+}
