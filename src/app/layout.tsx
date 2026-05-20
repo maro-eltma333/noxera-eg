@@ -24,7 +24,7 @@ export default function Root() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#F5F5F0] text-[#1A1A1A]">
+    <div className="min-h-screen flex flex-col font-sans bg-[#F5F5F0] text-[#1A1A1A] overflow-x-hidden">
       <Navbar />
       <CartDrawer />
       <main className="flex-grow">

@@ -13,6 +13,7 @@ import {
   Shield,
   Sparkles,
   ZoomIn,
+  X,
 } from "lucide-react";
 import { products } from "../data/products";
 import { useCart } from "../context/CartContext";
@@ -179,6 +180,14 @@ export default function ProductDetailsPage() {
             onClick={() => setLightboxOpen(false)}
             className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out"
           >
+            {/* Close Button */}
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-5 right-5 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md p-3 rounded-full transition-all duration-300 shadow-lg cursor-pointer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
             <motion.img
               initial={{ scale: 0.92 }}
               animate={{ scale: 1 }}
@@ -196,29 +205,40 @@ export default function ProductDetailsPage() {
       <div className="bg-white min-h-screen">
 
         {/* Top Nav Bar */}
-        <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-neutral-100">
+        <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md border-b border-neutral-100">
           <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
             <button
               onClick={() => navigate("/boxfit")}
               className="group inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-neutral-400 hover:text-black transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
-              BoxFit Drops
+              <span>BoxFit <span className="hidden sm:inline">Drops</span></span>
             </button>
-            <div className="flex items-center gap-1.5">
+            <div className="hidden md:flex items-center gap-1.5">
               <span className="text-[10px] font-black uppercase tracking-widest text-neutral-300">Noxera</span>
               <span className="text-neutral-200">/</span>
               <span className="text-[10px] font-black uppercase tracking-widest text-neutral-600 truncate max-w-[200px]">{product.title}</span>
             </div>
-            <a
-              href={getWhatsAppLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#25D366] hover:opacity-80 transition-opacity"
-            >
-              <MessageCircle className="h-3.5 w-3.5" />
-              WhatsApp
-            </a>
+            <div className="flex items-center gap-4">
+              <a
+                href={getWhatsAppLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#25D366] hover:opacity-80 transition-opacity"
+              >
+                <MessageCircle className="h-3.5 w-3.5" />
+                WhatsApp
+              </a>
+              <div className="h-4 w-px bg-neutral-200 hidden sm:block" />
+              <button
+                onClick={() => navigate("/boxfit")}
+                className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-neutral-400 hover:text-black transition-colors"
+                title="Close"
+              >
+                <X className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Close</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -230,9 +250,9 @@ export default function ProductDetailsPage() {
             <div className="relative bg-neutral-50">
 
               {/* Main Image */}
-              <div className="lg:sticky lg:top-14 lg:h-[calc(100vh-56px)] flex flex-col">
+              <div className="lg:sticky lg:top-[136px] lg:h-[calc(100vh-136px)] flex flex-col">
                 <div
-                  className="relative flex-1 overflow-hidden cursor-zoom-in group"
+                  className="relative flex-1 aspect-[4/5] sm:aspect-square lg:aspect-auto overflow-hidden cursor-zoom-in group"
                   onClick={() => setLightboxOpen(true)}
                 >
                   <AnimatePresence mode="wait">
@@ -459,7 +479,7 @@ export default function ProductDetailsPage() {
                       </a>
                     </div>
 
-                    <div className={`grid gap-2 ${sizes.length <= 4 ? "grid-cols-4" : "grid-cols-5"}`}>
+                    <div className="flex flex-wrap gap-2">
                       {sizes.map((size) => {
                         const isSelected = size === selectedSize;
                         return (
@@ -467,7 +487,7 @@ export default function ProductDetailsPage() {
                             key={size}
                             whileTap={{ scale: 0.94 }}
                             onClick={() => { setSelectedSize(size); setSizeError(false); }}
-                            className={`relative py-4 text-xs font-black uppercase tracking-wider rounded-2xl transition-all duration-200 border-2 overflow-hidden ${
+                            className={`relative flex-1 min-w-[64px] max-w-[100px] py-4 text-xs font-black uppercase tracking-wider rounded-2xl transition-all duration-200 border-2 overflow-hidden ${
                               isSelected
                                 ? "bg-black text-white border-black shadow-lg shadow-black/15"
                                 : sizeError

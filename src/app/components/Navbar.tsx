@@ -7,6 +7,26 @@ import { useAuth } from "../context/AuthContext";
 import { AnimatePresence, motion } from "motion/react";
 import { useSiteSettings } from "../context/SiteSettingsContext";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  show: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 260, damping: 25 },
+  },
+};
+
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -16,6 +36,21 @@ export function Navbar() {
   const { settings } = useSiteSettings();
   const navigate = useNavigate();
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
 
   // Close user menu on outside click
   useEffect(() => {
@@ -188,51 +223,115 @@ export function Navbar() {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="xl:hidden bg-white border-t border-gray-100 overflow-y-auto max-h-[calc(100vh-80px)]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="xl:hidden fixed inset-x-0 bottom-0 top-20 z-50 bg-[#111111]/98 text-white backdrop-blur-xl flex flex-col overflow-y-auto"
             >
-              <div className="px-4 py-4 space-y-1">
-                {navLinks.map(({ to, label }) => (
-                  <Link
-                    key={to}
-                    to={to}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block px-3 py-2.5 text-sm font-bold uppercase tracking-wide text-gray-800 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors"
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+                className="flex-1 flex flex-col justify-between p-6 sm:p-10 gap-8"
+              >
+                {/* Search and Navigation Links */}
+                <div className="space-y-8">
+                  {/* Premium Search Trigger */}
+                  <motion.button
+                    variants={itemVariants}
+                    onClick={() => { setIsMenuOpen(false); setIsSearchOpen(true); }}
+                    className="w-full flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 text-white/40 hover:text-white transition-all text-left text-xs uppercase tracking-wider font-black"
                   >
-                    {label}
-                  </Link>
-                ))}
-                <div className="border-t border-gray-100 mt-2 pt-2">
-                  {isLoggedIn ? (
-                    <>
-                      <Link to="/profile" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-3 py-2.5 text-sm font-bold text-gray-800 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors">
-                        <User className="h-4 w-4" /> My Profile
-                      </Link>
-                      {isAdmin && (
-                        <Link to="/admin" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-3 py-2.5 text-sm font-bold text-gray-800 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors">
-                          <LayoutDashboard className="h-4 w-4" /> Admin
+                    <Search className="h-4 w-4 text-white/40" />
+                    Search the collection...
+                  </motion.button>
+
+                  {/* Primary Nav Links */}
+                  <div className="flex flex-col">
+                    {navLinks.map(({ to, label }, idx) => (
+                      <motion.div key={to} variants={itemVariants}>
+                        <Link
+                          to={to}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="group flex items-baseline gap-4 py-4 border-b border-white/5"
+                        >
+                          <span className="text-[10px] font-mono text-white/20 font-bold">0{idx + 1}</span>
+                          <span className="font-oswald font-black text-3xl sm:text-4xl uppercase tracking-tighter group-hover:text-amber-400 group-hover:translate-x-2 transition-all duration-300">
+                            {label}
+                          </span>
                         </Link>
-                      )}
-                      <button onClick={handleLogout} className="flex items-center gap-2 px-3 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 rounded-lg w-full text-left transition-colors">
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Footer and User Profile Section */}
+                <div className="space-y-6">
+                  {isLoggedIn ? (
+                    <motion.div variants={itemVariants} className="bg-white/5 border border-white/10 p-5 rounded-[1.5rem] flex flex-col gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-white text-black rounded-2xl flex items-center justify-center text-lg font-black shadow-lg">
+                          {user?.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-[9px] font-black uppercase tracking-widest text-white/40">Logged in as</p>
+                          <p className="font-oswald font-bold text-lg text-white truncate max-w-[200px]">{user?.name}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 mt-1">
+                        <Link
+                          to="/profile"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all font-bold text-xs uppercase tracking-wider text-white"
+                        >
+                          <User className="h-4 w-4" /> Profile
+                        </Link>
+                        {isAdmin && (
+                          <Link
+                            to="/admin"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all font-bold text-xs uppercase tracking-wider text-white"
+                          >
+                            <LayoutDashboard className="h-4 w-4" /> Admin
+                          </Link>
+                        )}
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 transition-all font-black text-xs uppercase tracking-widest"
+                      >
                         <LogOut className="h-4 w-4" /> Sign Out
                       </button>
-                    </>
+                    </motion.div>
                   ) : (
-                    <>
-                      <Link to="/login" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2.5 text-sm font-bold text-gray-800 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors">Log In</Link>
-                      <Link to="/register" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2.5 text-sm font-bold text-gray-800 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors">Sign Up</Link>
-                    </>
+                    <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3">
+                      <Link
+                        to="/login"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center py-4 rounded-xl border border-white/20 hover:border-white transition-all font-bold text-xs uppercase tracking-widest text-white"
+                      >
+                        Log In
+                      </Link>
+                      <Link
+                        to="/register"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center py-4 rounded-xl bg-white hover:bg-[#F3EDE6] text-black transition-all font-black text-xs uppercase tracking-widest"
+                      >
+                        Sign Up
+                      </Link>
+                    </motion.div>
                   )}
+
+                  {/* Brand Meta & Social Links */}
+                  <motion.div variants={itemVariants} className="flex justify-between items-center border-t border-white/5 pt-5 text-white/40">
+                    <span className="text-[8px] font-black uppercase tracking-[0.25em]">NOXERA. EST. 2026</span>
+                    <div className="flex gap-4">
+                      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-[9px] font-black uppercase tracking-wider">Instagram</a>
+                      <a href="https://wa.me/201026490075" target="_blank" rel="noopener noreferrer" className="text-[#25D366] hover:opacity-80 transition-opacity text-[9px] font-black uppercase tracking-wider">WhatsApp</a>
+                    </div>
+                  </motion.div>
                 </div>
-                <button
-                  onClick={() => { setIsMenuOpen(false); setIsSearchOpen(true); }}
-                  className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-primary rounded-lg w-full transition-colors"
-                >
-                  <Search className="h-4 w-4" /> Search
-                </button>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

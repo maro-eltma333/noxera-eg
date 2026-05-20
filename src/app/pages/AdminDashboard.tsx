@@ -861,7 +861,7 @@ export default function AdminDashboard() {
                                                             </div>
                                                         </td>
                                                         <td className="px-8 py-4 text-right">
-                                                            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <div className="flex items-center justify-end gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                                                                 <button onClick={() => setEditingProduct(p)} className="p-3 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-primary hover:border-primary transition-all">
                                                                     <Edit2 className="h-4 w-4" />
                                                                 </button>

@@ -127,14 +127,14 @@ export default function ProfilePage() {
 
             <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 -mt-24 relative z-20">
                 {/* Modern Stats row */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16">
                     {statItems.map((s, i) => (
                         <motion.div
                             key={s.label}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className="bg-white p-8 rounded-[2rem] shadow-xl shadow-black/[0.03] border border-gray-100 text-center"
+                            className="bg-white p-4 sm:p-8 rounded-2xl sm:rounded-[2rem] shadow-xl shadow-black/[0.03] border border-gray-100 text-center"
                         >
                             <div className={`font-oswald font-black text-4xl mb-1 ${s.color}`}>{s.value}</div>
                             <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">{s.label}</div>
@@ -145,7 +145,7 @@ export default function ProfilePage() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                     {/* Left Column: Settings */}
                     <div className="lg:col-span-4 space-y-8">
-                        <section className="bg-white p-10 rounded-[2.5rem] shadow-xl shadow-black/[0.03] border border-gray-100">
+                        <section className="bg-white p-5 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-black/[0.03] border border-gray-100">
                             <h2 className="font-oswald font-black text-2xl uppercase tracking-tight mb-10 flex items-center gap-3">
                                 <Settings className="h-6 w-6 text-accent" /> Profile Settings
                             </h2>
@@ -218,7 +218,7 @@ export default function ProfilePage() {
                         </section>
 
                         {/* Security Card */}
-                        <section className="bg-white p-10 rounded-[2.5rem] shadow-xl shadow-black/[0.03] border border-gray-100 overflow-hidden">
+                        <section className="bg-white p-5 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-black/[0.03] border border-gray-100 overflow-hidden">
                             <div className="flex items-center justify-between mb-8">
                                 <h2 className="font-oswald font-black text-2xl uppercase tracking-tight flex items-center gap-3">
                                     <Lock className="h-6 w-6 text-accent" /> Security
@@ -298,7 +298,7 @@ export default function ProfilePage() {
 
                     {/* Right Column: Orders */}
                     <div className="lg:col-span-8">
-                        <section className="bg-white p-10 rounded-[3rem] shadow-xl shadow-black/[0.03] border border-gray-100 h-full">
+                        <section className="bg-white p-5 sm:p-10 rounded-[2rem] sm:rounded-[3rem] shadow-xl shadow-black/[0.03] border border-gray-100 h-full">
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-4">
                                 <h2 className="font-oswald font-black text-4xl uppercase tracking-tighter flex items-center gap-4">
                                     <ShoppingBag className="h-10 w-10 text-accent" /> Checkout History
@@ -326,7 +326,7 @@ export default function ProfilePage() {
                                             initial={{ opacity: 0, x: 20 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
-                                            className="bg-[#FDFDFD] p-8 rounded-[2rem] border border-gray-100 hover:border-accent hover:shadow-2xl hover:shadow-black/5 transition-all duration-500 group"
+                                            className="bg-[#FDFDFD] p-4 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-gray-100 hover:border-accent hover:shadow-2xl hover:shadow-black/5 transition-all duration-500 group"
                                         >
                                             <div className="flex flex-wrap justify-between gap-8 mb-10">
                                                 <div className="space-y-1">

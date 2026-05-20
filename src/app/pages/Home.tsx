@@ -136,7 +136,7 @@ export default function Home() {
               </div>
 
               {/* Floating Sizing Card Bottom Right */}
-              <div className="absolute -bottom-6 -right-6 bg-white p-5 rounded-3xl shadow-xl z-20 border border-neutral-100 max-w-[240px]">
+              <div className="absolute bottom-4 right-4 sm:-bottom-6 sm:-right-6 bg-white p-5 rounded-3xl shadow-xl z-20 border border-neutral-100 max-w-[240px]">
                 <div className="space-y-3">
                   <div>
                     <span className="text-[8px] font-black uppercase tracking-wider text-accent block">NOXERA DEFINE</span>
@@ -159,13 +159,13 @@ export default function Home() {
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="absolute top-1/2 left-0 w-64 h-64 bg-accent/5 rounded-full blur-[100px] -translate-y-1/2" />
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Image */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="xl:col-span-4"
+              className="lg:col-span-4"
             >
               <div className="relative rounded-3xl overflow-hidden group shadow-2xl shadow-black/5 aspect-[3/4]">
                 <img
@@ -191,7 +191,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="xl:col-span-4 text-center px-4"
+              className="lg:col-span-4 text-center px-4"
             >
               <div className="inline-flex items-center justify-center mb-6">
                 <span className="h-px w-8 bg-accent/40" />
@@ -230,7 +230,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="xl:col-span-4"
+              className="lg:col-span-4"
             >
               <div className="relative rounded-3xl overflow-hidden group shadow-2xl shadow-black/5 aspect-[3/4]">
                 <img
